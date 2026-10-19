@@ -1,0 +1,170 @@
+/* Golden Scale — panel styles. Tuned to sit next to Illustrator's own panels. */
+
+:root {
+  --bg: #323232;
+  --bg-2: #2a2a2a;
+  --bg-3: #3d3d3d;
+  --line: #1f1f1f;
+  --line-2: #4a4a4a;
+  --fg: #e6e6e6;
+  --fg-dim: #9a9a9a;
+  --fg-faint: #6f6f6f;
+  --accent: #d4a53a;        /* golden */
+  --accent-fg: #1a1a1a;
+  --accent-soft: rgba(212, 165, 58, 0.18);
+  --blue: #4b9fff;
+  --radius: 3px;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", "Adobe Clean", Helvetica, Arial, sans-serif;
+}
+body.theme-light {
+  --bg: #f0f0f0; --bg-2: #e6e6e6; --bg-3: #dcdcdc; --line: #c8c8c8; --line-2: #b4b4b4;
+  --fg: #202020; --fg-dim: #5a5a5a; --fg-faint: #8a8a8a;
+  --accent: #b8862a; --accent-soft: rgba(184, 134, 42, 0.18);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font: 11px/1.4 var(--font);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+  -webkit-user-select: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+#app { padding: 8px 10px 12px; min-width: 230px; }
+
+section { padding: 8px 0; border-bottom: 1px solid var(--line); }
+section:last-of-type { border-bottom: 0; }
+
+.section-title {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin: 0 0 6px; color: var(--fg-dim); font-size: 10px; letter-spacing: .04em; text-transform: uppercase;
+}
+.section-title .hint { text-transform: none; letter-spacing: 0; color: var(--fg-faint); font-size: 10px; }
+
+.row { display: flex; align-items: center; }
+.row.gap { gap: 6px; margin-top: 6px; }
+.row.gap:first-child { margin-top: 0; }
+.grow { flex: 1 1 auto; min-width: 0; }
+
+/* ---------- readout ---------- */
+.readout { padding-top: 2px; }
+.readout-dims { display: flex; align-items: baseline; gap: 6px; font-variant-numeric: tabular-nums; }
+.readout-dims .dim label { color: var(--fg-faint); font-size: 10px; margin-right: 4px; }
+.readout-dims .dim b { font-size: 15px; font-weight: 600; }
+.readout-dims .x { color: var(--fg-faint); }
+.readout-dims .unit { color: var(--fg-dim); margin-left: auto; }
+.readout-sub { color: var(--fg-dim); margin-top: 2px; min-height: 14px; }
+.readout-sub .fib { color: var(--accent); font-weight: 600; }
+
+/* ---------- reference-point proxy (like the Transform panel) ---------- */
+.ref-row { gap: 12px; align-items: flex-start; }
+.proxy {
+  position: relative; width: 48px; height: 48px; flex: 0 0 48px;
+  display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr);
+  margin: 4px 0 0 2px;
+}
+.proxy-frame {
+  position: absolute; left: 6px; top: 6px; right: 6px; bottom: 6px;
+  border: 1px solid var(--fg-dim); pointer-events: none;
+}
+.proxy .pt {
+  appearance: none; -webkit-appearance: none; background: none; border: 0; padding: 0; margin: 0;
+  position: relative; cursor: pointer;
+}
+.proxy .pt::before {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 7px; height: 7px;
+  transform: translate(-50%, -50%);
+  background: var(--bg); border: 1px solid var(--fg-dim); border-radius: 1px;
+}
+.proxy .pt:hover::before { border-color: var(--fg); }
+.proxy .pt.on::before { background: var(--accent); border-color: var(--accent); }
+
+.ref-controls { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+
+/* ---------- fields ---------- */
+.field label { display: block; color: var(--fg-faint); font-size: 10px; margin-bottom: 3px; }
+.field.inline { display: flex; align-items: center; gap: 4px; }
+.field.inline label { margin: 0; white-space: nowrap; }
+
+input[type="number"], select {
+  background: var(--bg-2); color: var(--fg); border: 1px solid var(--line); border-radius: var(--radius);
+  height: 22px; padding: 0 6px; font: inherit; min-width: 0; outline: none;
+}
+input[type="number"] { width: 54px; text-align: right; -moz-appearance: textfield; }
+input[type="number"]::-webkit-inner-spin-button { opacity: .4; }
+input:focus, select:focus { border-color: var(--blue); }
+select { padding-right: 2px; }
+
+/* segmented control */
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--bg-2); }
+.seg button {
+  appearance: none; -webkit-appearance: none; background: none; color: var(--fg-dim); border: 0;
+  border-right: 1px solid var(--line); height: 22px; padding: 0 8px; font: inherit; cursor: pointer; flex: 1;
+  white-space: nowrap;
+}
+.seg button:last-child { border-right: 0; }
+.seg button:hover { color: var(--fg); background: var(--bg-3); }
+.seg button.on { background: var(--bg-3); color: var(--fg); box-shadow: inset 0 -2px 0 var(--accent); }
+
+/* lock toggle */
+.lock {
+  appearance: none; -webkit-appearance: none; width: 22px; height: 22px; border-radius: var(--radius);
+  border: 1px solid var(--line); background: var(--bg-2); color: var(--fg-faint); cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; flex: 0 0 22px;
+}
+.lock.on { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+
+/* ---------- chips ---------- */
+.chips { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+.chip {
+  appearance: none; -webkit-appearance: none; height: 26px; border-radius: var(--radius);
+  border: 1px solid var(--line); background: var(--bg-2); color: var(--fg); font: inherit; font-weight: 600;
+  cursor: pointer; font-variant-numeric: tabular-nums; position: relative;
+}
+.chip:hover { background: var(--bg-3); border-color: var(--line-2); }
+.chip:active { transform: translateY(1px); }
+.chip.current { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.chip.near::after {
+  content: ""; position: absolute; bottom: 3px; left: 50%; width: 4px; height: 4px; border-radius: 50%;
+  transform: translateX(-50%); background: var(--accent); opacity: .7;
+}
+.chip small { display: block; font-weight: 400; color: var(--fg-faint); font-size: 9px; line-height: 1; margin-top: -1px; }
+.chip.current small { color: var(--accent); }
+
+/* ---------- buttons ---------- */
+.btn {
+  appearance: none; -webkit-appearance: none; height: 24px; border-radius: var(--radius);
+  border: 1px solid var(--line); background: var(--bg-2); color: var(--fg); font: inherit; cursor: pointer; padding: 0 8px;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--bg-3); border-color: var(--line-2); }
+.btn:active { transform: translateY(1px); }
+.btn.accent { background: var(--accent); color: var(--accent-fg); border-color: transparent; font-weight: 600; }
+.btn.accent:hover { filter: brightness(1.08); }
+.btn.small { font-size: 10px; color: var(--fg-dim); }
+.btn:disabled { opacity: .4; cursor: default; }
+
+.btn-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+
+/* ---------- checks / options ---------- */
+.check { display: flex; align-items: center; gap: 6px; color: var(--fg-dim); cursor: pointer; white-space: nowrap; }
+.check:hover { color: var(--fg); }
+.check input { margin: 0; accent-color: var(--accent); }
+.options { display: flex; flex-direction: column; gap: 5px; }
+
+/* ---------- toast ---------- */
+.toast {
+  position: fixed; left: 10px; right: 10px; bottom: 10px; padding: 6px 8px; border-radius: var(--radius);
+  background: #b33a3a; color: #fff; font-size: 11px; opacity: 0; transform: translateY(6px);
+  transition: opacity .15s, transform .15s; pointer-events: none;
+}
+.toast.ok { background: #2f6f3e; }
+.toast.show { opacity: 1; transform: none; }
+
+/* flash the readout when a transform lands */
+@keyframes flash { from { color: var(--accent); } to { color: var(--fg); } }
+.readout-dims b.flash { animation: flash .6s ease-out; }

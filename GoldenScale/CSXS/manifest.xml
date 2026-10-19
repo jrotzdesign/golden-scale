@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtensionManifest Version="7.0"
+    ExtensionBundleId="com.jrodesign.goldenscale"
+    ExtensionBundleVersion="1.0.1"
+    ExtensionBundleName="Golden Scale"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ExtensionList>
+    <Extension Id="com.jrodesign.goldenscale.panel" Version="1.0.1" />
+  </ExtensionList>
+  <ExecutionEnvironment>
+    <HostList>
+      <!-- ILST = Illustrator. 16.0 = CS6, open-ended upper bound. -->
+      <Host Name="ILST" Version="[16.0,99.9]" />
+    </HostList>
+    <LocaleList>
+      <Locale Code="All" />
+    </LocaleList>
+    <RequiredRuntimeList>
+      <RequiredRuntime Name="CSXS" Version="9.0" />
+    </RequiredRuntimeList>
+  </ExecutionEnvironment>
+  <DispatchInfoList>
+    <Extension Id="com.jrodesign.goldenscale.panel">
+      <DispatchInfo>
+        <Resources>
+          <MainPath>./index.html</MainPath>
+          <ScriptPath>./jsx/host.jsx</ScriptPath>
+        </Resources>
+        <Lifecycle>
+          <AutoVisible>true</AutoVisible>
+        </Lifecycle>
+        <UI>
+          <Type>Panel</Type>
+          <Menu>Golden Scale</Menu>
+          <Geometry>
+            <Size>
+              <Height>640</Height>
+              <Width>268</Width>
+            </Size>
+            <MinSize>
+              <Height>320</Height>
+              <Width>240</Width>
+            </MinSize>
+            <MaxSize>
+              <Height>1400</Height>
+              <Width>640</Width>
+            </MaxSize>
+          </Geometry>
+          <Icons>
+            <Icon Type="Normal">./icons/icon-normal.png</Icon>
+            <Icon Type="RollOver">./icons/icon-rollover.png</Icon>
+            <Icon Type="Disabled">./icons/icon-disabled.png</Icon>
+            <Icon Type="DarkNormal">./icons/icon-dark-normal.png</Icon>
+            <Icon Type="DarkRollOver">./icons/icon-dark-rollover.png</Icon>
+          </Icons>
+        </UI>
+      </DispatchInfo>
+    </Extension>
+  </DispatchInfoList>
+</ExtensionManifest>

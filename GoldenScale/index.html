@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Golden Scale</title>
+<link rel="stylesheet" href="css/panel.css">
+</head>
+<body class="theme-dark">
+
+<div id="app">
+
+  <!-- ===== Readout ===== -->
+  <section class="readout" id="readout">
+    <div class="readout-dims">
+      <span class="dim"><label>W</label><b id="rw">—</b></span>
+      <span class="x">×</span>
+      <span class="dim"><label>H</label><b id="rh">—</b></span>
+      <span class="unit" id="runit">px</span>
+    </div>
+    <div class="readout-sub" id="rsub">Select something in Illustrator</div>
+  </section>
+
+  <!-- ===== Reference point + axis ===== -->
+  <section class="row ref-row">
+    <div class="proxy" id="proxy" title="Reference point — where scaling happens from">
+      <div class="proxy-frame"></div>
+      <button class="pt" data-ref="0"></button><button class="pt" data-ref="1"></button><button class="pt" data-ref="2"></button>
+      <button class="pt" data-ref="3"></button><button class="pt" data-ref="4"></button><button class="pt" data-ref="5"></button>
+      <button class="pt" data-ref="6"></button><button class="pt" data-ref="7"></button><button class="pt" data-ref="8"></button>
+    </div>
+
+    <div class="ref-controls">
+      <div class="field">
+        <label>Apply to</label>
+        <div class="seg" id="axis">
+          <button data-v="w" class="on">W</button>
+          <button data-v="h">H</button>
+          <button data-v="long">Long</button>
+          <button data-v="short">Short</button>
+        </div>
+      </div>
+      <div class="field inline">
+        <label>1 unit =</label>
+        <input type="number" id="base" value="1" min="0.001" step="any">
+        <select id="unit">
+          <option>px</option><option>pt</option><option>mm</option><option>cm</option><option>in</option>
+        </select>
+        <button class="lock on" id="constrain" title="Constrain proportions (scale the other side too)">
+          <svg viewBox="0 0 12 12" width="12" height="12"><path class="lock-closed" d="M3 5V3.5a3 3 0 0 1 6 0V5M2.5 5h7v5.5h-7z" fill="none" stroke="currentColor" stroke-width="1.2"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Fibonacci chips ===== -->
+  <section>
+    <div class="section-title">
+      <span>Fibonacci</span>
+      <span class="hint">click = set · ⌥ click = duplicate &amp; set</span>
+    </div>
+    <div class="chips" id="chips"></div>
+  </section>
+
+  <!-- ===== Step / φ ===== -->
+  <section>
+    <div class="section-title"><span>Step</span><span class="hint" id="stepHint"></span></div>
+    <div class="btn-grid">
+      <button class="btn" id="prevFib" title="Snap down to the previous Fibonacci size">◀ Fib</button>
+      <button class="btn" id="nextFib" title="Snap up to the next Fibonacci size">Fib ▶</button>
+      <button class="btn" id="divPhi" title="Scale by 1/φ (0.618…)">÷ φ</button>
+      <button class="btn" id="mulPhi" title="Scale by φ (1.618…)">× φ</button>
+      <button class="btn small" id="divPhi2" title="Scale by 1/φ² (0.382…)">÷ φ²</button>
+      <button class="btn small" id="mulPhi2" title="Scale by φ² (2.618…)">× φ²</button>
+    </div>
+  </section>
+
+  <!-- ===== Golden rectangle ===== -->
+  <section>
+    <div class="section-title"><span>Golden rectangle</span><span class="hint">W : H = φ</span></div>
+    <div class="row gap">
+      <div class="seg grow" id="gold-orient">
+        <button data-v="land" class="on" title="Landscape — wider than tall">▭</button>
+        <button data-v="port" title="Portrait — taller than wide">▯</button>
+      </div>
+      <div class="seg grow" id="gold-keep">
+        <button data-v="w" class="on" title="Keep width, change height">keep W</button>
+        <button data-v="h" title="Keep height, change width">keep H</button>
+      </div>
+      <button class="btn accent" id="goldApply">Make</button>
+    </div>
+  </section>
+
+  <!-- ===== Sequence builder ===== -->
+  <section>
+    <div class="section-title"><span>Sequence builder</span><span class="hint" id="seqHint"></span></div>
+    <div class="row gap">
+      <div class="field inline">
+        <label>Copies</label>
+        <input type="number" id="seqCount" value="4" min="1" max="14">
+      </div>
+      <div class="seg grow" id="seqDir">
+        <button data-v="grow" class="on">Grow</button>
+        <button data-v="shrink">Shrink</button>
+      </div>
+    </div>
+    <div class="row gap">
+      <div class="seg grow" id="seqLayout">
+        <button data-v="concentric" class="on" title="Stack copies on the reference point">Concentric</button>
+        <button data-v="row" title="Lay copies out left → right">Row</button>
+        <button data-v="column" title="Lay copies out top → bottom">Column</button>
+      </div>
+      <div class="field inline" id="gapField">
+        <label>Gap</label>
+        <input type="number" id="seqGap" value="0" step="any">
+      </div>
+    </div>
+    <div class="row gap">
+      <label class="check"><input type="checkbox" id="seqKeep" checked> Keep original</label>
+      <button class="btn accent grow" id="seqBuild">Build sequence</button>
+    </div>
+  </section>
+
+  <!-- ===== Options ===== -->
+  <section class="options">
+    <label class="check"><input type="checkbox" id="optDup"> Duplicate instead of transform</label>
+    <label class="check"><input type="checkbox" id="optStrokes" checked> Scale strokes &amp; effects</label>
+    <label class="check"><input type="checkbox" id="optVisible"> Measure with stroke (visible bounds)</label>
+    <label class="check"><input type="checkbox" id="optLive" checked> Live readout</label>
+  </section>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script src="js/CSInterface.js"></script>
+<script src="js/panel.js"></script>
+</body>
+</html>
